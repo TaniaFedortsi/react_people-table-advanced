@@ -4,8 +4,8 @@ import React from 'react';
 interface Props {
   sexFilter: 'm' | 'f' | null;
   setSexFilter: (sex: 'm' | 'f' | null) => void;
-  nameFilter: string;
-  setNameFilter: (value: string) => void;
+  queryFilter: string;
+  setQueryFilter: (value: string) => void;
   toggleCentury: (arg: number) => void;
   clearCenturies: () => void;
   centuryFilter: number[];
@@ -15,8 +15,8 @@ interface Props {
 export const PeopleFilters: React.FC<Props> = ({
   sexFilter,
   setSexFilter,
-  nameFilter,
-  setNameFilter,
+  queryFilter,
+  setQueryFilter,
   toggleCentury,
   centuryFilter,
   clearCenturies,
@@ -54,8 +54,8 @@ export const PeopleFilters: React.FC<Props> = ({
             type="search"
             className="input"
             placeholder="Search"
-            value={nameFilter}
-            onChange={e => setNameFilter(e.target.value)}
+            value={queryFilter}
+            onChange={e => setQueryFilter(e.target.value)}
           />
 
           <span className="icon is-left">

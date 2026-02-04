@@ -11,7 +11,10 @@ export const PersonLink = ({ person }: { person: Person }) => {
 
   return (
     <NavLink
-      to={`/people${location.search}/${person.slug}`}
+      to={{
+        pathname: `/people/${person.slug}`,
+        search: location.search,
+      }}
       className={classNames({ 'has-text-danger': person.sex === 'f' })}
     >
       {person.name}

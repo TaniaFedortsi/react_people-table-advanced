@@ -1,5 +1,5 @@
 export interface FiltersProps {
   sexFilter: 'm' | 'f' | null;
-  nameFilter: string;
+  queryFilter: string;
   centuryFilter: number[];
 }

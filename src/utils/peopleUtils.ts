@@ -12,8 +12,8 @@ export function filterAndSortPeople(
         return false;
       }
 
-      if (filters.nameFilter) {
-        const query = filters.nameFilter.toLowerCase();
+      if (filters.queryFilter) {
+        const query = filters.queryFilter.toLowerCase();
         const matches =
           p.name.toLowerCase().includes(query) ||
           p.motherName?.toLowerCase().includes(query) ||

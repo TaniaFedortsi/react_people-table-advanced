@@ -5,15 +5,39 @@ import { PersonLink } from './PersonLink';
 import { SearchLink } from './SearchLink';
 import { useParams } from 'react-router-dom';
 import { KeyProps } from '../types/KeyProps';
+import { getNextSortOrder } from '../hooks/getNextSortOrder';
 
 interface Props {
   people: PersonWithRelations[] | [];
-  getOrderForKey: (key: KeyProps) => string | null;
+  sortKey: KeyProps | null;
+  sortOrder: 'asc' | 'desc';
 }
 
 /* eslint-disable jsx-a11y/control-has-associated-label */
-export const PeopleTable: React.FC<Props> = ({ getOrderForKey, people }) => {
+export const PeopleTable: React.FC<Props> = ({
+  people,
+  sortKey,
+  sortOrder,
+}) => {
   const { slug } = useParams();
+
+  const renderSortLink = (key: KeyProps) => (
+    <SearchLink
+      params={{
+        sort: getNextSortOrder(sortKey, sortOrder, key) ? key : null,
+        order: getNextSortOrder(sortKey, sortOrder, key),
+      }}
+    >
+      <span className="icon">
+        <i
+          className={classNames('fas fa-sort', {
+            'fa-sort-up': sortKey === key && sortOrder === 'asc',
+            'fa-sort-down': sortKey === key && sortOrder === 'desc',
+          })}
+        />
+      </span>
+    </SearchLink>
+  );
 
   return (
     <table
@@ -25,52 +49,25 @@ export const PeopleTable: React.FC<Props> = ({ getOrderForKey, people }) => {
           <th>
             <span className="is-flex is-flex-wrap-nowrap">
               Name
-              <SearchLink
-                params={{ sort: 'name', order: getOrderForKey('name') }}
-              >
-                <span className="icon">
-                  <i className="fas fa-sort" />
-                </span>
-              </SearchLink>
+              {renderSortLink('name')}
             </span>
           </th>
-
           <th>
             <span className="is-flex is-flex-wrap-nowrap">
               Sex
-              <SearchLink
-                params={{ sort: 'sex', order: getOrderForKey('sex') }}
-              >
-                <span className="icon">
-                  <i className="fas fa-sort" />
-                </span>
-              </SearchLink>
+              {renderSortLink('sex')}
             </span>
           </th>
-
           <th>
             <span className="is-flex is-flex-wrap-nowrap">
               Born
-              <SearchLink
-                params={{ sort: 'born', order: getOrderForKey('born') }}
-              >
-                <span className="icon">
-                  <i className="fas fa-sort" />
-                </span>
-              </SearchLink>
+              {renderSortLink('born')}
             </span>
           </th>
-
           <th>
             <span className="is-flex is-flex-wrap-nowrap">
               Died
-              <SearchLink
-                params={{ sort: 'died', order: getOrderForKey('died') }}
-              >
-                <span className="icon">
-                  <i className="fas fa-sort" />
-                </span>
-              </SearchLink>
+              {renderSortLink('died')}
             </span>
           </th>
 

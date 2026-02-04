@@ -5,7 +5,6 @@ import { Person, PersonWithRelations } from '../types';
 import { getPeople } from '../api';
 import { Loader } from './Loader';
 import { usePeopleFilters } from '../hooks/usePeopleFilters';
-import { KeyProps } from '../types/KeyProps';
 import { filterAndSortPeople } from '../utils/peopleUtils';
 
 export const PeoplePage = () => {
@@ -15,10 +14,10 @@ export const PeoplePage = () => {
 
   const {
     sexFilter,
-    nameFilter,
+    queryFilter,
     centuryFilter,
     setSexFilter,
-    setNameFilter,
+    setQueryFilter,
     toggleCentury,
     clearCenturies,
     resetAll,
@@ -37,7 +36,7 @@ export const PeoplePage = () => {
   const peopleWithRelations: PersonWithRelations[] = React.useMemo(() => {
     const filteredAndSorted = filterAndSortPeople(
       people,
-      { sexFilter, nameFilter, centuryFilter },
+      { sexFilter, queryFilter, centuryFilter },
       sortKey,
       sortOrder,
     );
@@ -47,19 +46,7 @@ export const PeoplePage = () => {
       mother: filteredAndSorted.find(p => p.name === person.motherName) || null,
       father: filteredAndSorted.find(p => p.name === person.fatherName) || null,
     }));
-  }, [people, sexFilter, nameFilter, centuryFilter, sortKey, sortOrder]);
-
-  const getOrderForKey = (key: KeyProps): 'asc' | 'desc' | null => {
-    if (sortKey !== key) {
-      return 'asc';
-    }
-
-    if (sortOrder === 'asc') {
-      return 'desc';
-    }
-
-    return null;
-  };
+  }, [people, sexFilter, queryFilter, centuryFilter, sortKey, sortOrder]);
 
   return (
     <>
@@ -72,11 +59,11 @@ export const PeoplePage = () => {
               <PeopleFilters
                 sexFilter={sexFilter}
                 setSexFilter={setSexFilter}
-                nameFilter={nameFilter}
+                queryFilter={queryFilter}
                 centuryFilter={centuryFilter}
                 toggleCentury={toggleCentury}
                 clearCenturies={clearCenturies}
-                setNameFilter={setNameFilter}
+                setQueryFilter={setQueryFilter}
                 resetAll={resetAll}
               />
             )}
@@ -96,7 +83,8 @@ export const PeoplePage = () => {
               {!loading && !error && people.length > 0 && (
                 <PeopleTable
                   people={peopleWithRelations}
-                  getOrderForKey={getOrderForKey}
+                  sortKey={sortKey}
+                  sortOrder={sortOrder}
                 />
               )}
             </div>

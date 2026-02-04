@@ -4,9 +4,12 @@ import { KeyProps } from '../types/KeyProps';
 export function usePeopleFilters() {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const nameFilter = searchParams.get('name') || '';
+  const queryFilter = searchParams.get('query') || '';
   const sexFilter = searchParams.get('sex') as 'm' | 'f' | null;
   const centuryFilter = searchParams.getAll('centuries').map(Number);
+
+  const sortKey = searchParams.get('sort') as KeyProps;
+  const sortOrder = (searchParams.get('order') as 'asc' | 'desc') || 'asc';
 
   const setSexFilter = (sex: 'm' | 'f' | null) => {
     const params = new URLSearchParams(searchParams);
@@ -20,13 +23,13 @@ export function usePeopleFilters() {
     setSearchParams(params);
   };
 
-  const setNameFilter = (value: string) => {
+  const setQueryFilter = (value: string) => {
     const params = new URLSearchParams(searchParams);
 
     if (value) {
-      params.set('name', value);
+      params.set('query', value);
     } else {
-      params.delete('name');
+      params.delete('query');
     }
 
     setSearchParams(params);
@@ -55,21 +58,18 @@ export function usePeopleFilters() {
     const params = new URLSearchParams(searchParams);
 
     params.delete('sex');
-    params.delete('name');
+    params.delete('query');
     params.delete('centuries');
 
     setSearchParams(params);
   };
 
-  const sortKey = searchParams.get('sort') as KeyProps;
-  const sortOrder = (searchParams.get('order') as 'asc' | 'desc') || 'asc';
-
   return {
     sexFilter,
-    nameFilter,
+    queryFilter,
     centuryFilter,
     setSexFilter,
-    setNameFilter,
+    setQueryFilter,
     toggleCentury,
     clearCenturies,
     resetAll,
